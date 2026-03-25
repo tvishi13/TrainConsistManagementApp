@@ -1,5 +1,4 @@
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedList;
 
 public class TrainConsistManagementApp {
 
@@ -7,26 +6,36 @@ public class TrainConsistManagementApp {
 
         System.out.println("=== Train Consist Management App ===");
 
-        // Create a HashSet to store unique bogie IDs
-        Set<String> bogieIds = new HashSet<>();
+        // Create LinkedList for train consist
+        LinkedList<String> train = new LinkedList<>();
 
-        // Adding bogie IDs (including duplicates)
-        bogieIds.add("B101");
-        bogieIds.add("B102");
-        bogieIds.add("B103");
-        bogieIds.add("B102"); // duplicate
-        bogieIds.add("B101"); // duplicate
+        // Add bogies (end by default)
+        train.add("Engine");
+        train.add("Sleeper");
+        train.add("AC");
+        train.add("Cargo");
+        train.add("Guard");
 
-        // Display unique bogie IDs
-        System.out.println("\nUnique Bogie IDs in Train:");
-        System.out.println(bogieIds);
+        // Display initial consist
+        System.out.println("\nInitial Train Consist:");
+        System.out.println(train);
 
-        // Check if a specific ID exists
-        if (bogieIds.contains("B101")) {
-            System.out.println("\nBogie ID B101 exists in the train.");
-        }
+        // Insert Pantry Car at position 2
+        train.add(2, "Pantry Car");
 
-        System.out.println("\nTotal Unique Bogies: " + bogieIds.size());
+        System.out.println("\nAfter inserting Pantry Car at position 2:");
+        System.out.println(train);
+
+        // Remove first and last bogie
+        train.removeFirst();
+        train.removeLast();
+
+        System.out.println("\nAfter removing first and last bogie:");
+        System.out.println(train);
+
+        // Final output
+        System.out.println("\nFinal Train Consist:");
+        System.out.println(train);
 
         System.out.println("\nProgram continues...");
     }
