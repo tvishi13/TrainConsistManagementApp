@@ -1,49 +1,46 @@
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.*;
 
-// Bogie class (custom object)
-class Bogie {
-    String name;
-    int capacity;
+class TrainConsistManagementApp {
+    private int id;
+    private int capacity;
 
-    // Constructor
-    Bogie(String name, int capacity) {
-        this.name = name;
+    // Constructor (no return type ✅)
+    public Bogie(int id, int capacity) {
+        this.id = id;
         this.capacity = capacity;
     }
 
+    // Getter method
+    public int getCapacity() {
+        return capacity;
+    }
+
     // Display method
-    @Override
     public String toString() {
-        return name + " - Capacity: " + capacity;
+        return "Bogie ID: " + id + ", Capacity: " + capacity;
     }
 }
 
-public class TrainConsistManagementApp{
-
+public class Main {
     public static void main(String[] args) {
 
-        System.out.println("=== Train Consist Management App ===");
+        // Creating list of bogies
+        List<Bogie> bogieList = new ArrayList<>();
+        bogieList.add(new Bogie(1, 50));
+        bogieList.add(new Bogie(2, 80));
+        bogieList.add(new Bogie(3, 65));
+        bogieList.add(new Bogie(4, 40));
 
-        // Create list of bogies
-        List<Bogie> bogies = new ArrayList<>();
+        // Filtering bogies with capacity > 60
+        List<Bogie> filteredList = bogieList.stream()
+                .filter(b -> b.getCapacity() > 60)
+                .collect(Collectors.toList());
 
-        // Add bogie objects
-        bogies.add(new Bogie("Sleeper", 72));
-        bogies.add(new Bogie("AC Chair", 50));
-        bogies.add(new Bogie("First Class", 24));
-
-        // Sort using Comparator (by capacity)
-        bogies.sort(Comparator.comparingInt(b -> b.capacity));
-
-        // Display sorted bogies
-        System.out.println("\nBogies sorted by capacity:");
-
-        for (Bogie b : bogies) {
+        // Display result
+        System.out.println("Filtered Bogies (Capacity > 60):");
+        for (Bogie b : filteredList) {
             System.out.println(b);
         }
-
-        System.out.println("\nProgram continues...");
     }
 }
