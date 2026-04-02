@@ -1,55 +1,51 @@
 import java.util.*;
-import java.util.stream.*;
 
-// Same class reused
+// 🔴 Custom Exception Class
+class InvalidCapacityException extends Exception {
+    public InvalidCapacityException(String message) {
+        super(message);
+    }
+}
+
+// 🚆 Bogie Class with Validation
 class TrainConsistManagementApp {
     private int id;
     private int capacity;
 
-    public TrainConsistManagementApp(int id, int capacity) {
+    // Constructor with validation
+    public TrainConsistManagementApp(int id, int capacity) throws InvalidCapacityException {
+        if (capacity <= 0) {
+            throw new InvalidCapacityException("Capacity must be greater than 0!");
+        }
         this.id = id;
         this.capacity = capacity;
     }
 
-    public int getCapacity() {
-        return capacity;
+    public String toString() {
+        return "Bogie ID: " + id + ", Capacity: " + capacity;
     }
 }
 
 public class Main {
     public static void main(String[] args) {
 
-        // Create large dataset for better measurement
         List<TrainConsistManagementApp> bogieList = new ArrayList<>();
-        for (int i = 1; i <= 100000; i++) {
-            bogieList.add(new TrainConsistManagementApp(i, (i % 100) + 30));
+
+        try {
+            // Valid bogie
+            bogieList.add(new TrainConsistManagementApp(1, 50));
+
+            // Invalid bogie (will throw exception ❌)
+            bogieList.add(new TrainConsistManagementApp(2, -10));
+
+        } catch (InvalidCapacityException e) {
+            System.out.println("❌ Error: " + e.getMessage());
         }
 
-        // 🔹 Loop-based filtering
-        long startLoop = System.nanoTime();
-
-        List<TrainConsistManagementApp> loopResult = new ArrayList<>();
+        // Display valid bogies only
+        System.out.println("\nValid Bogies in Train:");
         for (TrainConsistManagementApp b : bogieList) {
-            if (b.getCapacity() > 60) {
-                loopResult.add(b);
-            }
+            System.out.println(b);
         }
-
-        long endLoop = System.nanoTime();
-        long loopTime = endLoop - startLoop;
-
-        // 🔹 Stream-based filtering
-        long startStream = System.nanoTime();
-
-        List<TrainConsistManagementApp> streamResult = bogieList.stream()
-                .filter(b -> b.getCapacity() > 60)
-                .collect(Collectors.toList());
-
-        long endStream = System.nanoTime();
-        long streamTime = endStream - startStream;
-
-        // Display results
-        System.out.println("Loop Time (nanoseconds): " + loopTime);
-        System.out.println("Stream Time (nanoseconds): " + streamTime);
     }
 }
