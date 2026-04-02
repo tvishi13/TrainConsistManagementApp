@@ -1,57 +1,55 @@
 import java.util.*;
 import java.util.stream.*;
 
-// Class representing a goods bogie
+// Same class reused
 class TrainConsistManagementApp {
     private int id;
-    private String type;   // e.g., Cylindrical, Box
-    private String cargo;  // e.g., Petroleum, Coal
+    private int capacity;
 
-    // Constructor
-    public TrainConsistManagementApp(int id, String type, String cargo) {
+    public TrainConsistManagementApp(int id, int capacity) {
         this.id = id;
-        this.type = type;
-        this.cargo = cargo;
+        this.capacity = capacity;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public String getCargo() {
-        return cargo;
-    }
-
-    public String toString() {
-        return "Bogie ID: " + id + ", Type: " + type + ", Cargo: " + cargo;
+    public int getCapacity() {
+        return capacity;
     }
 }
 
 public class Main {
     public static void main(String[] args) {
 
-        // Create list of goods bogies
-        List<TrainConsistManagementApp> bogieList = Arrays.asList(
-                new TrainConsistManagementApp(1, "Cylindrical", "Petroleum"),
-                new TrainConsistManagementApp(2, "Box", "Coal"),
-                new TrainConsistManagementApp(3, "Cylindrical", "Petroleum"),
-                new TrainConsistManagementApp(4, "Box", "Grain")
-        );
-
-        // Safety rule using lambda + allMatch
-        boolean isSafe = bogieList.stream()
-                .allMatch(b -> {
-                    if (b.getType().equalsIgnoreCase("Cylindrical")) {
-                        return b.getCargo().equalsIgnoreCase("Petroleum");
-                    }
-                    return true; // other types allowed
-                });
-
-        // Display result
-        if (isSafe) {
-            System.out.println("✅ Train is SAFETY COMPLIANT");
-        } else {
-            System.out.println("❌ Train is NOT SAFE");
+        // Create large dataset for better measurement
+        List<TrainConsistManagementApp> bogieList = new ArrayList<>();
+        for (int i = 1; i <= 100000; i++) {
+            bogieList.add(new TrainConsistManagementApp(i, (i % 100) + 30));
         }
+
+        // 🔹 Loop-based filtering
+        long startLoop = System.nanoTime();
+
+        List<TrainConsistManagementApp> loopResult = new ArrayList<>();
+        for (TrainConsistManagementApp b : bogieList) {
+            if (b.getCapacity() > 60) {
+                loopResult.add(b);
+            }
+        }
+
+        long endLoop = System.nanoTime();
+        long loopTime = endLoop - startLoop;
+
+        // 🔹 Stream-based filtering
+        long startStream = System.nanoTime();
+
+        List<TrainConsistManagementApp> streamResult = bogieList.stream()
+                .filter(b -> b.getCapacity() > 60)
+                .collect(Collectors.toList());
+
+        long endStream = System.nanoTime();
+        long streamTime = endStream - startStream;
+
+        // Display results
+        System.out.println("Loop Time (nanoseconds): " + loopTime);
+        System.out.println("Stream Time (nanoseconds): " + streamTime);
     }
 }
