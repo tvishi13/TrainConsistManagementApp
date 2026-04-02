@@ -1,22 +1,21 @@
 import java.util.*;
 import java.util.stream.*;
 
+// Your required class name
 class TrainConsistManagementApp {
     private int id;
     private int capacity;
 
-    // Constructor (no return type ✅)
-    public Bogie(int id, int capacity) {
+    // Constructor (must match class name ✅)
+    public TrainConsistManagementApp(int id, int capacity) {
         this.id = id;
         this.capacity = capacity;
     }
 
-    // Getter method
     public int getCapacity() {
         return capacity;
     }
 
-    // Display method
     public String toString() {
         return "Bogie ID: " + id + ", Capacity: " + capacity;
     }
@@ -25,21 +24,22 @@ class TrainConsistManagementApp {
 public class Main {
     public static void main(String[] args) {
 
-        // Creating list of bogies
-        List<Bogie> bogieList = new ArrayList<>();
-        bogieList.add(new Bogie(1, 50));
-        bogieList.add(new Bogie(2, 80));
-        bogieList.add(new Bogie(3, 65));
-        bogieList.add(new Bogie(4, 40));
+        // List uses your class name
+        List<TrainConsistManagementApp> bogieList = new ArrayList<>();
 
-        // Filtering bogies with capacity > 60
-        List<Bogie> filteredList = bogieList.stream()
+        bogieList.add(new TrainConsistManagementApp(1, 50));
+        bogieList.add(new TrainConsistManagementApp(2, 80));
+        bogieList.add(new TrainConsistManagementApp(3, 65));
+        bogieList.add(new TrainConsistManagementApp(4, 40));
+
+        // Stream filtering
+        List<TrainConsistManagementApp> filteredList = bogieList.stream()
                 .filter(b -> b.getCapacity() > 60)
                 .collect(Collectors.toList());
 
-        // Display result
+        // Display output
         System.out.println("Filtered Bogies (Capacity > 60):");
-        for (Bogie b : filteredList) {
+        for (TrainConsistManagementApp b : filteredList) {
             System.out.println(b);
         }
     }
