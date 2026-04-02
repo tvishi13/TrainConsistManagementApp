@@ -1,17 +1,18 @@
 import java.util.*;
 import java.util.stream.*;
 
-// Your required class name
+// Same class reused
 class TrainConsistManagementApp {
     private int id;
     private int capacity;
 
-    // Constructor (must match class name ✅)
+    // Constructor
     public TrainConsistManagementApp(int id, int capacity) {
         this.id = id;
         this.capacity = capacity;
     }
 
+    // Getter
     public int getCapacity() {
         return capacity;
     }
@@ -24,23 +25,20 @@ class TrainConsistManagementApp {
 public class Main {
     public static void main(String[] args) {
 
-        // List uses your class name
-        List<TrainConsistManagementApp> bogieList = new ArrayList<>();
+        // Reusing bogie list
+        List<TrainConsistManagementApp> bogieList = Arrays.asList(
+                new TrainConsistManagementApp(1, 50),
+                new TrainConsistManagementApp(2, 80),
+                new TrainConsistManagementApp(3, 65),
+                new TrainConsistManagementApp(4, 40)
+        );
 
-        bogieList.add(new TrainConsistManagementApp(1, 50));
-        bogieList.add(new TrainConsistManagementApp(2, 80));
-        bogieList.add(new TrainConsistManagementApp(3, 65));
-        bogieList.add(new TrainConsistManagementApp(4, 40));
+        // Stream pipeline: map + reduce
+        int totalCapacity = bogieList.stream()
+                .map(b -> b.getCapacity())     // extract capacity
+                .reduce(0, Integer::sum);      // sum all values
 
-        // Stream filtering
-        List<TrainConsistManagementApp> filteredList = bogieList.stream()
-                .filter(b -> b.getCapacity() > 60)
-                .collect(Collectors.toList());
-
-        // Display output
-        System.out.println("Filtered Bogies (Capacity > 60):");
-        for (TrainConsistManagementApp b : filteredList) {
-            System.out.println(b);
-        }
+        // Display result
+        System.out.println("Total Seating Capacity: " + totalCapacity);
     }
 }
